@@ -1,6 +1,6 @@
 # Blogs & Comments
 
-## Live link of the project is [BlogsComments](https://famiplasma-lami19.netlify.app/)
+## Live link of the project is [BlogsComments](https://blogs-comments-lami19.netlify.app/)
 
 To get you started you can simply clone the repository:
 
