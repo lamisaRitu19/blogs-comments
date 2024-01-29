@@ -1,8 +1,11 @@
 import React from 'react';
 import save from '../assets/save.png';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const NewComment = ({_id}) => {
+    const navigate = useNavigate();
+
     const handleCreateComment = async(event) => {
         try{
             event.preventDefault();
@@ -13,7 +16,6 @@ const NewComment = ({_id}) => {
             const email = form.email.value;
             const body = form.body.value;
             const data = {blogId, id, name, email, body};
-            console.log(data);
 
             const response = await fetch("http://localhost:5000/comments", {
                 method: "POST",
@@ -33,7 +35,7 @@ const NewComment = ({_id}) => {
                 timer: 2500,    
             });
             await form.reset();
-            console.log("Success:", result);
+            navigate('/');
         }catch (error) {
             console.error("From create comment", error);
         }
@@ -48,12 +50,14 @@ const NewComment = ({_id}) => {
                         name="name"
                         placeholder="Name"
                         className="input bg-slate-200 border border-slate-100 w-96 h-10 rounded-md"
+                        required
                     />
                     <input
                         type="text"
                         name="email"
                         placeholder="Email"
                         className="input bg-slate-200 border border-slate-100 w-96 h-10 rounded-md"
+                        required
                     />
                 </div>
                 <input
@@ -61,6 +65,7 @@ const NewComment = ({_id}) => {
                     name="body"
                     placeholder="Body"
                     className="input bg-slate-200 border border-slate-100 w-[773px] h-10 rounded-md"
+                    required
                 />
             </div>
             <div>

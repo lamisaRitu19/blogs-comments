@@ -26,7 +26,6 @@ const NewBlog = () => {
             const body = form.body.value;
             const id = parseInt(_id);
             const data = {userId, id, title, body};
-            console.log(data);
 
             const response = await fetch(`http://localhost:5000/blogs/${id}`, {
                 method: "PUT",
@@ -36,7 +35,7 @@ const NewBlog = () => {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
+            await response.json();
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -46,7 +45,6 @@ const NewBlog = () => {
                 timer: 2500,
             });
             navigate(`/blogs/${_id}`);
-            console.log("Success:", result);
         }catch (error) {
             console.error("From update blog", error);
         }
@@ -71,7 +69,7 @@ const NewBlog = () => {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
+            await response.json();
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -81,7 +79,7 @@ const NewBlog = () => {
                 timer: 2500,    
             });
             await form.reset();
-            console.log("Success:", result);
+            navigate('/');
         }catch (error) {
             console.error("From create blog", error);
         }
@@ -109,6 +107,7 @@ const NewBlog = () => {
                         disabled={uId}
                         placeholder="Your id..."
                         className="input bg-slate-200 border border-slate-300 w-full"
+                        required
                     />
                 </div>
                 <div className='mb-2'>
@@ -123,6 +122,7 @@ const NewBlog = () => {
                         defaultValue={bTitle}
                         placeholder="Title of blog..."
                         className="input bg-slate-200 border border-slate-300 w-full"
+                        required
                     />
                 </div>
                 <div className='mb-4'>
@@ -138,6 +138,7 @@ const NewBlog = () => {
                         defaultValue={bBody}
                         placeholder="Body of blog..."
                         className="input bg-slate-200 border border-slate-300 w-full py-2"
+                        required
                     ></textarea>
                 </div>
                 <button className='bg-slate-500 text-white text-xl font-medium rounded-md px-6 py-2'>Save</button>

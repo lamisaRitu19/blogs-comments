@@ -3,10 +3,12 @@ import save from '../assets/save.png';
 import edit from '../assets/edit.png';
 import del from '../assets/delete.png';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Comment = ({comment, blogId}) => {
     const {id, name, email, body} = comment;
     const [editable, setEditable] = useState(false);
+    const navigate = useNavigate();
 
     const handleEditComment = async(event) => {
         try{
@@ -16,7 +18,6 @@ const Comment = ({comment, blogId}) => {
             const comEmail = form.comEmail.value;
             const comBody = form.comBody.value;
             const data = {blogId, id, name: comName, email: comEmail, body: comBody};
-            console.log(data);
 
             const response = await fetch(`http://localhost:5000/comments/${id}`, {
                 method: "PUT",
@@ -26,7 +27,7 @@ const Comment = ({comment, blogId}) => {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
+            await response.json();
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -36,7 +37,6 @@ const Comment = ({comment, blogId}) => {
                 timer: 2500,
             });
             setEditable(false);
-            console.log("Success:", result);
         }catch (error) {
             console.error("From update comment", error);
         }
@@ -58,7 +58,7 @@ const Comment = ({comment, blogId}) => {
                 }
             );
 
-            const result = await response.json();
+            await response.json();
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -67,7 +67,7 @@ const Comment = ({comment, blogId}) => {
                 showConfirmButton: false,
                 timer: 2500,
             });
-            console.log("Successfully deleted message", result);
+            navigate('/');
         } catch (error) {
             console.error("Comment delete error", error);
         }

@@ -14,7 +14,7 @@ const BlogProvider = ({children}) => {
             setBlogs(data);
             setLoading(false);
         })
-    }, [blogs])
+    }, [])
 
     useEffect(() => {
         fetch('http://localhost:5000/comments')
@@ -23,9 +23,9 @@ const BlogProvider = ({children}) => {
             setComments(data);
             setLoading(false);
         })
-    }, [comments])
+    }, [])
     
-    const blogInfo = {blogs, comments, loading};
+    const blogInfo = {blogs, loading};
     
     return (
         <BlogContext.Provider value={blogInfo}>{children}</BlogContext.Provider>

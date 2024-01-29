@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { Link, useActionData, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import heart from '../assets/heart.png';
 import edit from '../assets/edit.png';
 import del from '../assets/delete.png';
@@ -9,15 +9,10 @@ import Swal from 'sweetalert2';
 import NewComment from '../components/NewComment';
 
 const BlogComments = () => {
-    // const { blogs, comments, loading, handleEditBlog } = useContext(BlogContext);
     const {blog, comments} = useLoaderData();
+    const newComments = useActionData();
     const {_id} = useParams();
     const navigate = useNavigate();
-    // let blog, blogComments;
-    // if (!loading){
-    //     blog = blogs?.find(blog => blog.id === parseInt(_id));
-    //     blogComments = comments.filter(comment => comment.blogId === parseInt(_id));
-    // };
     
     const handleDeleteBlog = async() =>{
         try {
@@ -35,7 +30,7 @@ const BlogComments = () => {
                 }
             );
 
-            const result = await response.json();
+            await response.json();
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -45,12 +40,10 @@ const BlogComments = () => {
                 timer: 2500,
             });
             navigate('/');
-            console.log("Successfully deleted message", result);
         } catch (error) {
             console.error("Blog delete error", error);
         }
     }
-    // console.log(_id, loading, blogs, comments);
     
     return (
         <div className='screen-height pt-28'>   
@@ -77,6 +70,9 @@ const BlogComments = () => {
                 <div className=''>
                     {
                         comments?.map(comment => <Comment key={comment.id} comment={comment} blogId={_id}></Comment>)
+                    }
+                    {
+                        newComments?.map(comment => <Comment key={comment.id} comment={comment} blogId={_id}></Comment>)
                     }
                     <NewComment _id={_id}></NewComment>
                 </div>
