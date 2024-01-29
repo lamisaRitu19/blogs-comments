@@ -27,7 +27,7 @@ const NewBlog = () => {
             const id = parseInt(_id);
             const data = {userId, id, title, body};
 
-            const response = await fetch(`http://localhost:5000/blogs/${id}`, {
+            const response = await fetch(`https://blogs-and-comments.onrender.com/blogs/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,6 +36,20 @@ const NewBlog = () => {
             });
 
             await response.json();
+
+            // blog data edit in session storage
+            let blogComArr = [];
+            const storedBlog = sessionStorage.getItem('blog-comments');
+            if (storedBlog) {
+                blogComArr = JSON.parse(storedBlog);
+            }
+            const otherBlogs = blogComArr.filter(b => b.blogDetails.id !== id);
+            const selectedBlog = blogComArr.find(b => b.blogDetails.id === id);
+            selectedBlog.blogDetails.title = title;
+            selectedBlog.blogDetails.body = body;
+            otherBlogs.push(selectedBlog);
+            sessionStorage.setItem('blog-comments', JSON.stringify(otherBlogs));
+
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -61,7 +75,7 @@ const NewBlog = () => {
             const data = {userId, id, title, body};
             console.log(data);
 
-            const response = await fetch("http://localhost:5000/blogs", {
+            const response = await fetch("https://blogs-and-comments.onrender.com/blogs", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,7 +107,7 @@ const NewBlog = () => {
                 }
                 <span> Blog</span>
             </h1>
-            <form onSubmit={_id ? handleUpdateBlog : handleCreateBlog} className='w-1/2 bg-white border border-slate-200 rounded-xl drop-shadow-xl px-12 py-6 mx-auto mb-4'>
+            <form onSubmit={_id ? handleUpdateBlog : handleCreateBlog} className='lg:w-1/2 bg-white border border-slate-200 rounded-xl drop-shadow-xl px-12 py-6 mx-auto mb-4'>
                 <div className='mb-2'>
                     <label className="label">
                         <span className="text-xl font-bold leading-5">

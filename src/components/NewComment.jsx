@@ -17,7 +17,7 @@ const NewComment = ({_id}) => {
             const body = form.body.value;
             const data = {blogId, id, name, email, body};
 
-            const response = await fetch("http://localhost:5000/comments", {
+            const response = await fetch("https://blogs-and-comments.onrender.com/comments", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -25,7 +25,20 @@ const NewComment = ({_id}) => {
                 body: JSON.stringify(data),
             });
 
-            const result = await response.json();
+            await response.json();
+
+            // comment data edit in session storage
+            let blogComArr = [];
+            const storedBlog = sessionStorage.getItem('blog-comments');
+            if (storedBlog) {
+                blogComArr = JSON.parse(storedBlog);
+            }
+            const otherBlogs = blogComArr.filter(b => b.blogDetails.id !== blogId);
+            const selectedBlog = blogComArr.find(b => b.blogDetails.id === blogId);
+            selectedBlog.blogComments.push(data);
+            otherBlogs.push(selectedBlog);
+            sessionStorage.setItem('blog-comments', JSON.stringify(otherBlogs));
+
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -42,21 +55,21 @@ const NewComment = ({_id}) => {
     }
 
     return (
-        <form onSubmit={handleCreateComment} className='flex items-center gap-6 text-slate-500 mx-8 mb-4'>
+        <form onSubmit={handleCreateComment} className='xl:flex items-center gap-6 text-slate-500 mx-4 lg:mx-8 mb-4'>
             <div>
-                <div className='flex items-center gap-1 mb-1'>
+                <div className='lg:flex items-center gap-1 mb-1'>
                     <input
                         type="text"
                         name="name"
                         placeholder="Name"
-                        className="input bg-slate-200 border border-slate-100 w-96 h-10 rounded-md"
+                        className="input bg-slate-200 border border-slate-100 w-full lg:w-96 h-10 rounded-md"
                         required
                     />
                     <input
                         type="text"
                         name="email"
                         placeholder="Email"
-                        className="input bg-slate-200 border border-slate-100 w-96 h-10 rounded-md"
+                        className="input bg-slate-200 border border-slate-100 w-full lg:w-96 h-10 rounded-md"
                         required
                     />
                 </div>
@@ -64,7 +77,7 @@ const NewComment = ({_id}) => {
                     type="text"
                     name="body"
                     placeholder="Body"
-                    className="input bg-slate-200 border border-slate-100 w-[773px] h-10 rounded-md"
+                    className="input bg-slate-200 border border-slate-100 w-full lg:w-[773px] h-10 rounded-md"
                     required
                 />
             </div>

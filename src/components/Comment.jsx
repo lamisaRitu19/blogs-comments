@@ -19,7 +19,7 @@ const Comment = ({comment, blogId}) => {
             const comBody = form.comBody.value;
             const data = {blogId, id, name: comName, email: comEmail, body: comBody};
 
-            const response = await fetch(`http://localhost:5000/comments/${id}`, {
+            const response = await fetch(`https://blogs-and-comments.onrender.com/comments/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,6 +28,24 @@ const Comment = ({comment, blogId}) => {
             });
 
             await response.json();
+
+            // comment data edit in session storage
+            // let blogComArr = [];
+            // const storedBlog = sessionStorage.getItem('blog-comments');
+            // if (storedBlog) {
+            //     blogComArr = JSON.parse(storedBlog);
+            // }
+            // const otherBlogs = blogComArr.filter(b => b.blogDetails.id !== blogId);
+            // const selectedBlog = blogComArr.find(b => b.blogDetails.id === blogId);
+            // const otherComments = selectedBlog?.blogComments?.filter(b => b.id !== id);
+            // let selectedComment = selectedBlog?.blogComments?.find(b => b.id === id);
+            // selectedComment.name = comName;
+            // selectedComment.email = comEmail;
+            // selectedComment.body = comBody;
+            // otherComments.push(selectedComment);
+            // otherBlogs.push(selectedBlog)
+            // sessionStorage.setItem('blog-comments', JSON.stringify(otherBlogs));
+
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -49,7 +67,7 @@ const Comment = ({comment, blogId}) => {
             };
 
             const response = await fetch(
-                `http://localhost:5000/comments`, {
+                `https://blogs-and-comments.onrender.com/comments`, {
                     method: "Delete",
                     headers: {
                         "Content-Type": "application/json",
@@ -59,6 +77,19 @@ const Comment = ({comment, blogId}) => {
             );
 
             await response.json();
+
+            // comment data edit in session storage
+            // let blogComArr = [];
+            // const storedBlog = sessionStorage.getItem('blog-comments');
+            // if (storedBlog) {
+            //     blogComArr = JSON.parse(storedBlog);
+            // }
+            // const otherBlogs = blogComArr.filter(b => b.blogDetails.id !== blogId);
+            // const selectedBlog = blogComArr.find(b => b.blogDetails.id === blogId);
+            // const otherComments = selectedBlog?.blogComments?.filter(b => b.id !== id);
+            // otherBlogs.push(selectedBlog)
+            // sessionStorage.setItem('blog-comments', JSON.stringify(otherBlogs));
+
             Swal.fire({
                 position: "bottom-end",
                 width: 400,
@@ -74,17 +105,17 @@ const Comment = ({comment, blogId}) => {
     }
     
     return (
-        <div className='mx-8 mb-4'>
-            <form onSubmit={handleEditComment} className='flex items-center gap-6 text-slate-500 mb-2'>
+        <div className='mx-4 lg:mx-8 mb-4'>
+            <form onSubmit={handleEditComment} className='xl:flex items-center gap-6 text-slate-500 mb-2'>
                 <div>
-                    <div className='flex items-center gap-1 mb-1'>
+                    <div className='lg:flex items-center gap-1 mb-1'>
                         <input
                             type="text"
                             name="comName"
                             defaultValue={name}
                             disabled={!editable}
                             placeholder="Name"
-                            className="input bg-slate-200 text-slate-800 text-lg font-medium disabled:text-slate-800 disabled:text-lg disabled:font-medium border border-slate-100 w-96 h-10 rounded-md"
+                            className="input bg-slate-200 text-slate-800 text-lg font-medium disabled:text-slate-800 disabled:text-lg disabled:font-medium border border-slate-100 w-full lg:w-96 h-10 rounded-md"
                         />
                         <input
                             type="text"
@@ -92,7 +123,7 @@ const Comment = ({comment, blogId}) => {
                             defaultValue={email}
                             disabled={!editable}
                             placeholder="Email"
-                            className="input bg-slate-200 font-medium disabled:font-medium border border-slate-100 w-96 h-10 rounded-md"
+                            className="input bg-slate-200 font-medium disabled:font-medium border border-slate-100 w-full lg:w-96 h-10 rounded-md"
                         />
                     </div>
                     <input
@@ -101,7 +132,7 @@ const Comment = ({comment, blogId}) => {
                         defaultValue={body}
                         disabled={!editable}
                         placeholder="Body"
-                        className="input bg-slate-200 font-medium disabled:font-medium border border-slate-100 w-[773px] h-10 rounded-md"
+                        className="input bg-slate-200 font-medium disabled:font-medium border border-slate-100 w-full lg:w-[773px] h-10 rounded-md"
                     />
                 </div>
                 <div className='flex gap-3'>
