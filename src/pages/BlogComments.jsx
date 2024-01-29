@@ -1,21 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import heart from '../assets/heart.png';
 import edit from '../assets/edit.png';
 import del from '../assets/delete.png';
 import Comment from '../components/Comment';
 import { BlogContext } from '../context/BlogProvider';
 import Swal from 'sweetalert2';
+import NewComment from '../components/NewComment';
 
 const BlogComments = () => {
-    const { blogs, comments, loading, handleEditBlog } = useContext(BlogContext);
+    // const { blogs, comments, loading, handleEditBlog } = useContext(BlogContext);
+    const {blog, comments} = useLoaderData();
     const {_id} = useParams();
     const navigate = useNavigate();
-    let blog, blogComments;
-    if (!loading){
-        blog = blogs?.find(blog => blog.id === parseInt(_id));
-        blogComments = comments.filter(comment => comment.blogId === parseInt(_id));
-    };
+    // let blog, blogComments;
+    // if (!loading){
+    //     blog = blogs?.find(blog => blog.id === parseInt(_id));
+    //     blogComments = comments.filter(comment => comment.blogId === parseInt(_id));
+    // };
     
     const handleDeleteBlog = async() =>{
         try {
@@ -51,7 +53,7 @@ const BlogComments = () => {
     // console.log(_id, loading, blogs, comments);
     
     return (
-        !loading && <div className='screen-height pt-28'>   
+        <div className='screen-height pt-28'>   
             <div className='bg-white border border-slate-200 rounded-xl drop-shadow-xl px-12 py-6 mb-8'>
                 <h3 className='text-slate-800 text-3xl font-semibold mb-2'>{blog?.title}</h3>
                 <p className='text-slate-500 text-xl font-medium mb-4'>{blog?.body}</p>
@@ -74,8 +76,9 @@ const BlogComments = () => {
                 </div>
                 <div className=''>
                     {
-                        blogComments.map(comment => <Comment key={comment.id} comment={comment}></Comment>)
+                        comments?.map(comment => <Comment key={comment.id} comment={comment} blogId={_id}></Comment>)
                     }
+                    <NewComment _id={_id}></NewComment>
                 </div>
             </div> 
         </div>

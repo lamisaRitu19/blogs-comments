@@ -24,12 +24,8 @@ const BlogProvider = ({children}) => {
             setLoading(false);
         })
     }, [comments])
-
-    const handleEditBlog = (blogId) => {
-        console.log(blogId)
-    }
     
-    const blogInfo = {blogs, comments, loading, handleEditBlog};
+    const blogInfo = {blogs, comments, loading};
     
     return (
         <BlogContext.Provider value={blogInfo}>{children}</BlogContext.Provider>

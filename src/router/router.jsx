@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Favorites from "../pages/Favorites";
 import BlogComments from "../pages/BlogComments";
 import NewBlog from "../pages/NewBlog";
+import { BlogCommentsLoader } from "../loader/BlogCommentsLoader";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/blogs/:_id",
+                loader: BlogCommentsLoader,
                 element: <BlogComments></BlogComments>
             }
         ]
