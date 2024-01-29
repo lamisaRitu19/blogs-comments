@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import blog from '../assets/blog.png';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BlogContext } from '../context/BlogProvider';
+import Swal from 'sweetalert2';
 
 const NewBlog = () => {
     const {_id} = useParams();
@@ -36,6 +37,14 @@ const NewBlog = () => {
             });
 
             const result = await response.json();
+            Swal.fire({
+                position: "bottom-end",
+                width: 400,
+                icon: "success",
+                text: "Successfully updated the blog!",
+                showConfirmButton: false,
+                timer: 2500,
+            });
             navigate(`/blogs/${_id}`);
             console.log("Success:", result);
         }catch (error) {
@@ -63,6 +72,14 @@ const NewBlog = () => {
             });
 
             const result = await response.json();
+            Swal.fire({
+                position: "bottom-end",
+                width: 400,
+                icon: "success",
+                text: "Successfully created a new blog!",
+                showConfirmButton: false,
+                timer: 2500,    
+            });
             await form.reset();
             console.log("Success:", result);
         }catch (error) {
