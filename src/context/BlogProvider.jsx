@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from 'react';
 
-const useBlogs = () => {
+export const BlogContext = createContext();
+
+const BlogProvider = ({children}) => {
     const [blogs, setBlogs] = useState([]);
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -26,8 +28,12 @@ const useBlogs = () => {
     const handleEditBlog = (blogId) => {
         console.log(blogId)
     }
+    
+    const blogInfo = {blogs, comments, loading, handleEditBlog};
+    
+    return (
+        <BlogContext.Provider value={blogInfo}>{children}</BlogContext.Provider>
+    );
+};
 
-    return [blogs, comments, loading, setLoading, handleEditBlog];
-}
-
-export default useBlogs;
+export default BlogProvider;

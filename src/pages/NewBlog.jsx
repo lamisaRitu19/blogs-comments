@@ -1,7 +1,48 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import blog from '../assets/blog.png';
+import { useNavigate, useParams } from 'react-router-dom';
+import { BlogContext } from '../context/BlogProvider';
 
 const NewBlog = () => {
+    const {_id} = useParams();
+    const { blogs, loading } = useContext(BlogContext);
+    const navigate = useNavigate();
+    let uId, bTitle, bBody;
+
+    if (_id && !loading){
+        const blog = blogs?.find(blog => blog.id === parseInt(_id));
+        uId = blog.userId;
+        bTitle = blog.title;
+        bBody = blog.body;
+    }
+    
+    const handleUpdateBlog = async(event) => {
+        try{
+            event.preventDefault();
+            const form = event.target;
+            const userId = uId;
+            const title = form.title.value;
+            const body = form.body.value;
+            const id = parseInt(_id);
+            const data = {userId, id, title, body};
+            console.log(data);
+
+            const response = await fetch(`http://localhost:5000/blogs/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            navigate(`/blogs/${_id}`);
+            console.log("Success:", result);
+        }catch (error) {
+            console.error("From update blog", error);
+        }
+    }
+
     const handleCreateBlog = async(event) => {
         try{
             event.preventDefault();
@@ -22,7 +63,7 @@ const NewBlog = () => {
             });
 
             const result = await response.json();
-            form.reset();
+            await form.reset();
             console.log("Success:", result);
         }catch (error) {
             console.error("From create blog", error);
@@ -31,8 +72,13 @@ const NewBlog = () => {
     
     return (
         <div className='screen-height pt-32'>
-            <h1 className='flex justify-center items-center gap-3 text-slate-800 text-4xl text-center font-bold mb-6'><img src={blog} alt="blog" className='w-10' /><span>Create</span><span> Blog</span></h1>
-            <form onSubmit={handleCreateBlog} className='w-1/2 bg-white border border-slate-200 rounded-xl drop-shadow-xl px-12 py-6 mx-auto mb-4'>
+            <h1 className='flex justify-center items-center gap-3 text-slate-800 text-4xl text-center font-bold mb-6'><img src={blog} alt="blog" className='w-10' />
+                {
+                    _id ? <span>Update</span> : <span>Create</span>
+                }
+                <span> Blog</span>
+            </h1>
+            <form onSubmit={_id ? handleUpdateBlog : handleCreateBlog} className='w-1/2 bg-white border border-slate-200 rounded-xl drop-shadow-xl px-12 py-6 mx-auto mb-4'>
                 <div className='mb-2'>
                     <label className="label">
                         <span className="text-xl font-bold leading-5">
@@ -42,8 +88,8 @@ const NewBlog = () => {
                     <input
                         type="number"
                         name="userId"
-                        // defaultValue={fstname}
-                        // disabled={editable === 0}
+                        defaultValue={uId}
+                        disabled={uId}
                         placeholder="Your id..."
                         className="input bg-slate-200 border border-slate-300 w-full"
                     />
@@ -57,8 +103,7 @@ const NewBlog = () => {
                     <input
                         type="text"
                         name="title"
-                        // defaultValue={fstname}
-                        // disabled={editable === 0}
+                        defaultValue={bTitle}
                         placeholder="Title of blog..."
                         className="input bg-slate-200 border border-slate-300 w-full"
                     />
@@ -73,8 +118,7 @@ const NewBlog = () => {
                         type="text"
                         name="body"
                         rows="20"
-                        // defaultValue={fstname}
-                        // disabled={editable === 0}
+                        defaultValue={bBody}
                         placeholder="Body of blog..."
                         className="input bg-slate-200 border border-slate-300 w-full py-2"
                     ></textarea>

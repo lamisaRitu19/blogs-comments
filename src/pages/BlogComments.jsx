@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import useBlogs from '../hooks/useBlogs';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import heart from '../assets/heart.png';
 import edit from '../assets/edit.png';
 import del from '../assets/delete.png';
 import Comment from '../components/Comment';
+import { BlogContext } from '../context/BlogProvider';
 
 const BlogComments = () => {
-    const [blogs, comments, loading, setLoading] = useBlogs();
+    const { blogs, comments, loading, handleEditBlog } = useContext(BlogContext);
     const {_id} = useParams();
     let blog, blogComments;
     if (!loading){
@@ -16,7 +16,7 @@ const BlogComments = () => {
     };
     
 
-    console.log(_id, loading, blogs, comments);
+    // console.log(_id, loading, blogs, comments);
     
     return (
         !loading && <div className='screen-height pt-28'>   
@@ -25,9 +25,20 @@ const BlogComments = () => {
                 <p className='text-slate-500 text-xl font-medium mb-4'>{blog?.body}</p>
                 <hr /> 
                 <div className='flex items-center gap-6'>
-                    <button className='flex items-center gap-2 bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'><img src={heart} alt="heart" className='w-4' /><span className='text-lg font-semibold'>Add to favorite</span></button>
-                    <button className='flex items-center gap-2 bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'><img src={edit} alt="edit" className='w-5' /><span className='text-lg font-semibold'>Edit</span></button>
-                    <button className='flex items-center gap-2 bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'><img src={del} alt="delete" className='w-6' /><span className='text-lg font-semibold'>Delete</span></button>
+                    <button className='flex items-center gap-2 bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'>
+                        <img src={heart} alt="heart" className='w-4' />
+                        <span className='text-lg font-semibold'>Add to favorite</span>
+                    </button>
+                    <button className='bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'>
+                        <Link to={`/blog/${blog?.id}`} className='flex items-center gap-2'>
+                            <img src={edit} alt="edit" className='w-5' />
+                            <span className='text-lg font-semibold'>Edit</span>
+                        </Link>
+                    </button>
+                    <button className='flex items-center gap-2 bg-slate-300 hover:bg-slate-600 text-slate-900 hover:text-white rounded-lg drop-shadow-md px-3 py-1 my-5'>
+                        <img src={del} alt="delete" className='w-6' />
+                        <span className='text-lg font-semibold'>Delete</span>
+                    </button>
                 </div>
                 <div className=''>
                     {

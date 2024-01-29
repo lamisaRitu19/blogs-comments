@@ -1,9 +1,10 @@
 import Blog from '../components/Blog';
 import blog from '../assets/blog.png';
-import useBlogs from '../hooks/useBlogs';
+import { useContext } from 'react';
+import { BlogContext } from '../context/BlogProvider';
 
 const Home = () => {
-    const [blogs] = useBlogs();
+    const { blogs } = useContext(BlogContext);
     
     return (
         <div className='screen-height pt-32'>
